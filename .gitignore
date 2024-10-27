@@ -1,0 +1,3 @@
+os-image.bin
+kernel.bin
+**/*.o
