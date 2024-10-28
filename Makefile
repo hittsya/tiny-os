@@ -4,9 +4,11 @@ LD=i386-elf-ld
 AS=nasm
 QEMU=qemu-system-i386
 
-C_SOURCES = $(wildcard kernel/*.c drivers/*.c)
-HEADERS = $(wildcard kernel/*.h drivers/*.h)
+C_SOURCES = $(wildcard kernel/*.c kernel/drivers/*.c)
+HEADERS = $(wildcard kernel/*.h kernel/drivers/*.h)
 OBJ = ${C_SOURCES:.c=.o}
+
+all: os-image.bin
 
 os-image.bin: boot/x86/boot.bin kernel.bin
 	cat $^ > os-image.bin
@@ -19,10 +21,10 @@ kernel.elf: boot/x86/kernel.o ${OBJ}
 	@echo "LD 	$<"
 	@$(LD) -o $@ -Ttext 0x1000 $^ 
 
-run: os-image.bin
+run:
 	@$(QEMU) -fda os-image.bin
 
-%.o: %.c ${HEADERS}
+%.o: %.c ${C_SOURCES}
 	@echo "CC	$<"
 	@$(CC) ${CFLAGS} -ffreestanding -c $< -o $@
 
@@ -36,4 +38,4 @@ run: os-image.bin
 
 clean:
 	@- rm -rf *.bin *.dis *.o os-image.bin *.elf
-	@- rm -rf kernel/*.o boot/*.bin drivers/*.o boot/*.o
+	@- rm -rf kernel/*.o boot/*.bin kernel/drivers/*.o boot/*.o
