@@ -3,7 +3,7 @@
 ;
 [bits 32]
 
-VIDEO_MEMORY equ 0xb8000
+VIDEO_MEMORY   equ 0xb8000
 WHITE_ON_BLACK equ 0x0f
 
 print_string_pm:

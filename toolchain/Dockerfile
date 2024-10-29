@@ -38,9 +38,9 @@ RUN mkdir /tmp/src && cd /tmp/src &&\
     cd / && rm -rf /tmp/src
 
 # Build GCC
-RUN curl -O https://ftp.gnu.org/gnu/gcc/gcc-14.1.0/gcc-14.1.0.tar.gz &&\
-    tar xf gcc-14.1.0.tar.gz &&\
-    cd gcc-14.1.0 &&\
+RUN curl -O https://ftp.gnu.org/gnu/gcc/gcc-12.1.0/gcc-12.1.0.tar.gz &&\
+    tar xf gcc-12.1.0.tar.gz &&\
+    cd gcc-12.1.0 &&\
     ./contrib/download_prerequisites &&\
     mkdir gcc-build && cd gcc-build &&\
         ../configure \
@@ -54,7 +54,7 @@ RUN curl -O https://ftp.gnu.org/gnu/gcc/gcc-14.1.0/gcc-14.1.0.tar.gz &&\
     make all-target-libgcc -j$(nproc) &&\
     make install-gcc -j$(nproc) &&\
     make install-target-libgcc -j$(nproc) &&\
-    cd / && rm -rf gcc-14.1.0 gcc-14.1.0.tar.gz
+    cd / && rm -rf gcc-12.1.0 gcc-12.1.0.tar.gz
 
 ENV PATH="$PATH:/usr/local/i386elfgcc/bin"
 

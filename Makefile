@@ -4,6 +4,10 @@ LD=i386-elf-ld
 AS=nasm
 QEMU=qemu-system-i386
 
+CFLAGS = -g -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs \
+		-Wall -Wextra -Werror -ffreestanding -fno-stack-protector -z execstack -m32 -no-pie -fno-pic
+LDFLAGS = -melf_i386
+
 C_SOURCES = $(wildcard kernel/*.c kernel/drivers/*.c)
 HEADERS = $(wildcard kernel/*.h kernel/drivers/*.h)
 OBJ = ${C_SOURCES:.c=.o}
@@ -15,7 +19,7 @@ os-image.bin: boot/x86/boot.bin kernel.bin
 
 kernel.bin: boot/x86/kmain.o ${OBJ}
 	@echo "LD 	$<"
-	@$(LD) -o $@ -Ttext 0x1000 $^ --oformat binary
+	@$(LD) ${LD_FLAGS} -o $@ -Ttext 0x1000 $^ --oformat binary
 
 kernel.elf: boot/x86/kernel.o ${OBJ}
 	@echo "LD 	$<"
@@ -23,6 +27,7 @@ kernel.elf: boot/x86/kernel.o ${OBJ}
 
 run:
 	@$(QEMU) -fda os-image.bin
+
 
 %.o: %.c ${C_SOURCES}
 	@echo "CC	$<"
