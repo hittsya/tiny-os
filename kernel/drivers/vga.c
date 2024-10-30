@@ -1,5 +1,6 @@
 #include "port.h"
 #include "vga.h"
+#include "../util.h"
 
 static int kvga_make_curoff(int col, int row)
 {
@@ -60,6 +61,21 @@ int kvga_putchar(char c, int col, int row, char attr)
         offset += 2;
     }
 
+    if (offset >= VGA_MAX_ROWS * VGA_MAX_COLS * 2) {
+        for (int i = 1; i < VGA_MAX_ROWS; i++) {
+            memcpy((char*)(kvga_make_curoff(0, i)   + VGA_VIDMEM),
+                   (char*)(kvga_make_curoff(0, i-1) + VGA_VIDMEM),
+                   VGA_MAX_COLS * 2);
+        }
+
+        char *last_line = (char *)(kvga_make_curoff(0, VGA_MAX_ROWS-1) + VGA_VIDMEM);
+        for (int i = 0; i < VGA_MAX_COLS * 2; i++) {
+            last_line[i] = 0;
+        }
+
+        offset -= 2 * VGA_MAX_COLS;
+    }
+
     kvga_set_curoff(offset);
     return offset;
 }
@@ -81,6 +97,16 @@ void kvga_putstr(char *message, int col, int row)
         col = kvga_curoff_col(off);
         row = kvga_curoff_row(off);
     }
+}
+
+void kvga_print_c(const char *message)
+{
+    kvga_putstr_c(message, -1, -1);
+}
+
+void kvga_print(char *message)
+{
+    kvga_putstr_c(message, -1, -1);
 }
 
 void kvga_putstr_c(const char *message, int col, int row)

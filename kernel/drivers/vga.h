@@ -47,4 +47,10 @@ void kvga_putstr(char *message, int col, int row);
  */
 void kvga_putstr_c(const char *message, int col, int row);
 
+/* @brief Print the string at the top of the screen
+ */
+void kvga_print(char *message);
+void kvga_print_c(const char *message);
+
+
 #endif /* _VGA_H_ */
