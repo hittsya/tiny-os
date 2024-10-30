@@ -11,4 +11,6 @@ typedef          char  s8;
 #define L16(address) (u16)((address) & 0xFFFF)
 #define H16(address) (u16)(((address) >> 16) & 0xFFFF)
 
+#define PACKED __attribute__((packed))
+
 #endif /* _KDEFFS_H_ */

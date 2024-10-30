@@ -8,9 +8,9 @@ CFLAGS = -g -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartf
 		-Wall -Wextra -Werror -ffreestanding -fno-stack-protector -z execstack -m32 -no-pie -fno-pic
 LDFLAGS = -melf_i386
 
-C_SOURCES = $(wildcard kernel/*.c kernel/drivers/*.c)
-HEADERS = $(wildcard kernel/*.h kernel/drivers/*.h)
-OBJ = ${C_SOURCES:.c=.o}
+C_SOURCES = $(wildcard kernel/*.c kernel/drivers/*.c kernel/arch/x86/*.c)
+HEADERS = $(wildcard kernel/*.h kernel/drivers/*.h kernel/arch/x86/*.h)
+OBJ = ${C_SOURCES:.c=.o kernel/arch/x86/int.o}
 
 all: os-image.bin
 
@@ -28,8 +28,7 @@ kernel.elf: boot/x86/kernel.o ${OBJ}
 run:
 	@$(QEMU) -fda os-image.bin
 
-
-%.o: %.c ${C_SOURCES}
+%.o: %.c ${HEADERS} 
 	@echo "CC	$<"
 	@$(CC) ${CFLAGS} -ffreestanding -c $< -o $@
 
@@ -38,9 +37,9 @@ run:
 	@$(AS) $< -f elf -o $@
 
 %.bin: %.asm
-	@echo "AS	$<"
+	@echo "AS	$<" 
 	@$(AS) $< -f bin -o $@
 
 clean:
 	@- rm -rf *.bin *.dis *.o os-image.bin *.elf
-	@- rm -rf kernel/*.o boot/*.bin kernel/drivers/*.o boot/*.o
+	@- rm -rf kernel/*.o boot/*.bin kernel/drivers/*.o boot/*.o kernel/arch/x86/*.o

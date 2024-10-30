@@ -1,3 +1,6 @@
 os-image.bin
 kernel.bin
 **/*.o
+*.swp
+*.swo
+
