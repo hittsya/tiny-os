@@ -1,6 +1,8 @@
 #include "port.h"
 #include "vga.h"
+
 #include "../util.h"
+#include "../kdefines.h"
 
 static int kvga_make_curoff(int col, int row)
 {
@@ -21,9 +23,9 @@ void kvga_set_curoff(int off)
 {
     off /= 2;
     port_write_byte(VGA_REG_SCRN_CNTL, 14);
-    port_write_byte(VGA_REG_SCRN_DATA, (unsigned char)(off >> 8));
+    port_write_byte(VGA_REG_SCRN_DATA, (u8)(off >> 8));
     port_write_byte(VGA_REG_SCRN_CNTL, 15);
-    port_write_byte(VGA_REG_SCRN_DATA, (unsigned char)(off & 0xff));
+    port_write_byte(VGA_REG_SCRN_DATA, (u8)(off & 0xff));
 }
 
 int kvga_get_curoff()
@@ -39,7 +41,7 @@ int kvga_get_curoff()
 
 int kvga_putchar(char c, int col, int row, char attr)
 {
-    unsigned char *vidmem = (unsigned char*) VGA_VIDMEM;
+    u8 *vidmem = (u8 *) VGA_VIDMEM;
     if (!attr) attr = VGA_WHITE_ON_BLACK;
 
     if (col >= VGA_MAX_COLS || row >= VGA_MAX_ROWS) {
@@ -63,12 +65,12 @@ int kvga_putchar(char c, int col, int row, char attr)
 
     if (offset >= VGA_MAX_ROWS * VGA_MAX_COLS * 2) {
         for (int i = 1; i < VGA_MAX_ROWS; i++) {
-            memcpy((char*)(kvga_make_curoff(0, i)   + VGA_VIDMEM),
-                   (char*)(kvga_make_curoff(0, i-1) + VGA_VIDMEM),
+            memcpy((s8 *)(kvga_make_curoff(0, i)   + VGA_VIDMEM),
+                   (s8 *)(kvga_make_curoff(0, i-1) + VGA_VIDMEM),
                    VGA_MAX_COLS * 2);
         }
 
-        char *last_line = (char *)(kvga_make_curoff(0, VGA_MAX_ROWS-1) + VGA_VIDMEM);
+        char *last_line = (s8 *)(kvga_make_curoff(0, VGA_MAX_ROWS-1) + VGA_VIDMEM);
         for (int i = 0; i < VGA_MAX_COLS * 2; i++) {
             last_line[i] = 0;
         }
