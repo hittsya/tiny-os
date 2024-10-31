@@ -1,7 +1,7 @@
 #ifndef _PORT_H_
 #define _PORT_H_
 
-#include "../kdefines.h"
+#include <kernel/kdefines.h>
 
 u8 port_read_byte(u16 port);
 void port_write_byte(u16 port, u8 data);

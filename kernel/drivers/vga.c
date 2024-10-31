@@ -1,8 +1,8 @@
-#include "port.h"
-#include "vga.h"
+#include <kernel/drivers/port.h>
+#include <kernel/drivers/vga.h>
 
-#include "../util.h"
-#include "../kdefines.h"
+#include <kernel/util.h>
+#include <kernel/kdefines.h>
 
 static int kvga_make_curoff(int col, int row)
 {

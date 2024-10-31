@@ -1,8 +1,9 @@
-#include "timer.h"
-#include "isr.h"
-#include "../../drivers/vga.h"
-#include "../../drivers/port.h"
-#include "../../util.h"
+#include <kernel/arch/x86/timer.h>
+#include <kernel/arch/x86/isr.h>
+
+#include <kernel/drivers/vga.h>
+#include <kernel/drivers/port.h>
+#include <kernel/util.h>
 
 static u32 tick = 0;
 

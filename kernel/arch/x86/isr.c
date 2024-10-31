@@ -1,8 +1,9 @@
-#include "isr.h"
-#include "idt.h"
-#include "../../drivers/vga.h"
-#include "../../drivers/port.h"
-#include "../../util.h"
+#include <kernel/arch/x86/idt.h>
+#include <kernel/arch/x86/isr.h>
+
+#include <kernel/drivers/vga.h>
+#include <kernel/drivers/port.h>
+#include <kernel/util.h>
 
 static kisr_t IRQ_HANDLERS[256];
 

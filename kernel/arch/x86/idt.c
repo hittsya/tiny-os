@@ -1,5 +1,5 @@
-#include "idt.h"
-#include "../../drivers/vga.h"
+#include <kernel/arch/x86/idt.h>
+#include <kernel/drivers/vga.h>
 
 static struct kidt_entry    idt[KERN_IDT_ENTRIES];
 static struct kidt_register idt_reg;

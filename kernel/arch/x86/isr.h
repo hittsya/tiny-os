@@ -1,7 +1,7 @@
 #ifndef _ISR_H_
 #define _ISR_H_
 
-#include "../../kdefines.h"
+#include <kernel/kdefines.h>
 
 extern void isr0();
 extern void isr1();

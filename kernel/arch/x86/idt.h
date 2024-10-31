@@ -3,7 +3,7 @@
 #ifndef _IDT_H_
 #define _IDT_H_
 
-#include "../../kdefines.h"
+#include <kernel/kdefines.h>
 
 #define KERN_IDT_CS      0x08
 #define KERN_IDT_ENTRIES 256

@@ -1,12 +1,9 @@
-#include "keyboard.h"
+#include <kernel/drivers/keyboard.h>
+#include <kernel/drivers/port.h>
+#include <kernel/drivers/vga.h>
 
-#include "keyboard.h"
-#include "port.h"
-#include "vga.h"
-
-#include "../arch/x86/isr.h"
-#include "../util.h"
-
+#include <kernel/arch/x86/isr.h>
+#include <kernel/util.h>
 
 static void kbd_scan_decode(u8 scancode) {
     switch (scancode) {
@@ -210,7 +207,7 @@ static void kbd_cb(struct kisr_registers regs)
     kvga_print("\n");
 }
 
-void kbd_init()
+void kirq_kbd_init()
 {
     kisr_reg_irq_hndlr(IRQ1, kbd_cb);
 }

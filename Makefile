@@ -5,7 +5,8 @@ AS=nasm
 QEMU=qemu-system-i386
 
 CFLAGS = -g -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs \
-		-Wall -Wextra -Werror -ffreestanding -fno-stack-protector -z execstack -m32 -no-pie -fno-pic
+	 -Wall -Wextra -Werror -ffreestanding -fno-stack-protector -z execstack -m32 -no-pie -fno-pic \
+	 -I. -Ikernel
 LDFLAGS = -melf_i386
 
 C_SOURCES = $(wildcard kernel/*.c kernel/drivers/*.c kernel/arch/x86/*.c)
