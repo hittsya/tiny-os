@@ -1,7 +1,7 @@
 #include <kernel/drivers/port.h>
 #include <kernel/drivers/vga.h>
 
-#include <kernel/util.h>
+#include <kernel/libc/memory.h>
 #include <kernel/kdefines.h>
 
 static int kvga_make_curoff(int col, int row)
@@ -55,12 +55,12 @@ int kvga_putchar(char c, int col, int row, char attr)
     else offset = kvga_get_curoff();
 
     if (c == '\n') {
-        row = kvga_curoff_row(offset);
+        row    = kvga_curoff_row(offset);
         offset = kvga_make_curoff(0, row+1);
     } else {
-        vidmem[offset] = c;
-        vidmem[offset+1] = attr;
-        offset += 2;
+        vidmem[offset]   =  c;
+        vidmem[offset+1] =  attr;
+        offset           += 2;
     }
 
     if (offset >= VGA_MAX_ROWS * VGA_MAX_COLS * 2) {
@@ -127,4 +127,14 @@ void kvga_clear()
     }
 
     kvga_set_curoff(kvga_make_curoff(0, 0));
+}
+
+void kvga_print_bkscp()
+{
+    int offset = kvga_get_curoff()-2;
+    int row    = kvga_curoff_row(offset);
+    int col    = kvga_curoff_col(offset);
+
+    kvga_putchar(' ' /* 0x08 */, col, row, VGA_WHITE_ON_BLACK);
+    kvga_set_curoff(kvga_get_curoff()-1);
 }

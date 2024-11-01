@@ -3,11 +3,12 @@
 
 #include <kernel/drivers/vga.h>
 #include <kernel/drivers/port.h>
-#include <kernel/util.h>
+
+#include <kernel/libc/string.h>
 
 static kisr_t IRQ_HANDLERS[256];
 
-static char *ISR_EX_2_STR[] = {
+static const char *ISR_EX_2_STR[] = {
     "Division By Zero",
     "Debug",
     "Non Maskable Interrupt",
@@ -118,7 +119,7 @@ void kisr_handler(struct kisr_registers r) {
     itoa(r.int_no, s);
     kvga_print(s);
     kvga_print_c("\n");
-    kvga_print(ISR_EX_2_STR[r.int_no]);
+    kvga_print((char *)ISR_EX_2_STR[r.int_no]);
     kvga_print_c("\n");
 }
 

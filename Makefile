@@ -9,8 +9,8 @@ CFLAGS = -g -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartf
 	 -I. -Ikernel
 LDFLAGS = -melf_i386
 
-C_SOURCES = $(wildcard kernel/*.c kernel/drivers/*.c kernel/arch/x86/*.c)
-HEADERS = $(wildcard kernel/*.h kernel/drivers/*.h kernel/arch/x86/*.h)
+C_SOURCES = $(wildcard kernel/*.c kernel/drivers/*.c kernel/libc/*.c kernel/arch/x86/*.c)
+HEADERS = $(wildcard kernel/*.h kernel/drivers/*.h kernel/libc/*.h kernel/arch/x86/*.h)
 OBJ = ${C_SOURCES:.c=.o kernel/arch/x86/int.o}
 
 all: os-image.bin
@@ -43,4 +43,4 @@ run:
 
 clean:
 	@- rm -rf *.bin *.dis *.o os-image.bin *.elf
-	@- rm -rf kernel/*.o boot/*.bin kernel/drivers/*.o boot/*.o kernel/arch/x86/*.o
+	@- rm -rf kernel/*.o boot/*.bin kernel/drivers/*.o boot/*.o kernel/libc/*.o kernel/arch/x86/*.o

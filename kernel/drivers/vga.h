@@ -52,5 +52,6 @@ void kvga_putstr_c(const char *message, int col, int row);
 void kvga_print(char *message);
 void kvga_print_c(const char *message);
 
+void kvga_print_bkscp();
 
 #endif /* _VGA_H_ */

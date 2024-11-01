@@ -3,7 +3,8 @@
 
 #include <kernel/drivers/vga.h>
 #include <kernel/drivers/port.h>
-#include <kernel/util.h>
+
+#include <kernel/libc/string.h>
 
 static u32 tick = 0;
 
