@@ -15,14 +15,14 @@ OBJ = ${C_SOURCES:.c=.o kernel/arch/x86/int.o}
 
 all: os-image.bin
 
-os-image.bin: boot/x86/boot.bin kernel.bin
+os-image.bin: ssbl/x86/boot.bin kernel.bin
 	cat $^ > os-image.bin
 
-kernel.bin: boot/x86/kmain.o ${OBJ}
+kernel.bin: ssbl/x86/kmain.o ${OBJ}
 	@echo "LD 	$<"
 	@$(LD) ${LD_FLAGS} -o $@ -Ttext 0x1000 $^ --oformat binary
 
-kernel.elf: boot/x86/kernel.o ${OBJ}
+kernel.elf: ssbl/x86/kernel.o ${OBJ}
 	@echo "LD 	$<"
 	@$(LD) -o $@ -Ttext 0x1000 $^ 
 
@@ -43,4 +43,4 @@ run:
 
 clean:
 	@- rm -rf *.bin *.dis *.o os-image.bin *.elf
-	@- rm -rf kernel/*.o boot/*.bin kernel/drivers/*.o boot/*.o kernel/libc/*.o kernel/arch/x86/*.o
+	@- rm -rf kernel/*.o ssbl/*.bin kernel/drivers/*.o ssbl/*.o kernel/libc/*.o kernel/arch/x86/*.o

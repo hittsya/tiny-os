@@ -13,20 +13,22 @@ call load_kernel
 call switch_to_pm
 jmp $
 
-%include "boot/x86/print_ascii.asm"
-%include "boot/x86/print_hex.asm"
-%include "boot/x86/kdisk.asm"
+%include "ssbl/x86/print_ascii.asm"
+%include "ssbl/x86/print_hex.asm"
+%include "ssbl/x86/kdisk.asm"
 
-%include "boot/x86/x32/print_ascii.asm"
-%include "boot/x86/x32/entry.asm"
-%include "boot/x86/x32/gtd.asm"
+%include "ssbl/x86/x32/print_ascii.asm"
+%include "ssbl/x86/x32/entry.asm"
+%include "ssbl/x86/x32/gtd.asm"
 
 [bits 16]
 load_kernel:
-    mov bx, MSG_LOAD_KERNEL
+    ; Print that we're in the 16bit real mode
+    mov  bx, MSG_LOAD_KERNEL
     call aprint
     call aprintln
 
+    ; Load the kernel from the disk
     mov bx, KERNEL_OFFSET
     mov dh, 31
     mov dl, [BOOT_DRIVE]
@@ -35,11 +37,13 @@ load_kernel:
 
 [bits 32]
 BEGIN_PM:
+    ; Print that we're in the 32bit protected mode
     mov ebx, MSG_PROT_MODE
     call     print_string_pm
+
+    ; Call the main kernel function
     call     KERNEL_OFFSET
     jmp $
-
 
 BOOT_DRIVE      db 0
 MSG_REAL_MODE   db "Started in 16-bit Real Mode", 0
