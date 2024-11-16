@@ -1,50 +1,81 @@
-[extern kisr_handler]
-[extern kirq_handler]
+extern kisr_handler
+extern kirq_handler
 
-; Generic ISR handler function
+; Generic ISR handler function (for x86_64)
 isr_common_stub:
-    pusha
-    mov  ax, ds
-    push eax
-    mov  ax, 0x10
+    push rbx                 ; Save callee-saved registers
+    push rbp
+    push r12
+    push r13
+    push r14
+    push r15
+
+    ; Save DS to a register
+    mov rax, ds
+    push rax                 ; Save the current value of DS
+
+    mov  rax, 0x10           ; Set DS to the kernel data segment
     mov  ds, ax
     mov  es, ax
     mov  fs, ax
     mov  gs, ax
-    call kisr_handler
 
-    pop eax
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-    popa
-    add esp, 8
-    sti
-    iret
+    call kisr_handler        ; Call the ISR handler function
 
-; Generic IRQ handler function
+    pop rax                  ; Restore DS value
+    mov ds, rax
+    mov es, rax
+    mov fs, rax
+    mov gs, rax
+
+    pop r15                  ; Restore callee-saved registers
+    pop r14
+    pop r13
+    pop r12
+    pop rbp
+    pop rbx
+
+    add rsp, 8               ; Correct the stack pointer after saving DS
+    sti                      ; Enable interrupts
+    iret                     ; Return from interrupt
+
+; Generic IRQ handler function (for x86_64)
 irq_common_stub:
-    pusha
-    mov ax, ds
-    push eax
-    mov ax, 0x10
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-    call kirq_handler
+    push rbx                 ; Save callee-saved registers
+    push rbp
+    push r12
+    push r13
+    push r14
+    push r15
 
-    pop ebx
-    mov ds, bx
-    mov es, bx
-    mov fs, bx
-    mov gs, bx
-    popa
-    add esp, 8
-    sti
-    iret
+    ; Save DS to a register
+    mov rax, ds
+    push rax                 ; Save the current value of DS
 
+    mov  rax, 0x10           ; Set DS to the kernel data segment
+    mov  ds, ax
+    mov  es, ax
+    mov  fs, ax
+    mov  gs, ax
+
+    call kirq_handler        ; Call the IRQ handler function
+
+    pop rbx                  ; Restore DS value
+    mov ds, rbx
+    mov es, rbx
+    mov fs, rbx
+    mov gs, rbx
+
+    pop r15                  ; Restore callee-saved registers
+    pop r14
+    pop r13
+    pop r12
+    pop rbp
+    add rsp, 8               ; Correct the stack pointer after saving DS
+    sti                      ; Enable interrupts
+    iret                     ; Return from interrupt
+
+; Define ISR handlers for exceptions (0-31)
 global isr0
 global isr1
 global isr2
@@ -104,7 +135,7 @@ isr0:
 
 ; 1: Debug Exception
 isr1:
-    cli; 7: Coprocessor Not Available Exception
+    cli
     push byte 0
     push byte 1
     jmp isr_common_stub
@@ -314,6 +345,7 @@ isr31:
     jmp isr_common_stub
 
 
+; Define IRQ handlers for IRQ0-IRQ15
 irq0:
     cli
     push byte 0

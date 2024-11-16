@@ -5,6 +5,7 @@
 #include <kernel/drivers/port.h>
 
 #include <kernel/libc/string.h>
+#include <kernel/kdefines.h>
 
 static kisr_t IRQ_HANDLERS[256];
 
@@ -48,38 +49,38 @@ static const char *ISR_EX_2_STR[] = {
 };
 
 void kisr_install() {
-    kidt_addentry(0,  (u32)isr0);
-    kidt_addentry(1,  (u32)isr1);
-    kidt_addentry(2,  (u32)isr2);
-    kidt_addentry(3,  (u32)isr3);
-    kidt_addentry(4,  (u32)isr4);
-    kidt_addentry(5,  (u32)isr5);
-    kidt_addentry(6,  (u32)isr6);
-    kidt_addentry(7,  (u32)isr7);
-    kidt_addentry(8,  (u32)isr8);
-    kidt_addentry(9,  (u32)isr9);
-    kidt_addentry(10, (u32)isr10);
-    kidt_addentry(11, (u32)isr11);
-    kidt_addentry(12, (u32)isr12);
-    kidt_addentry(13, (u32)isr13);
-    kidt_addentry(14, (u32)isr14);
-    kidt_addentry(15, (u32)isr15);
-    kidt_addentry(16, (u32)isr16);
-    kidt_addentry(17, (u32)isr17);
-    kidt_addentry(18, (u32)isr18);
-    kidt_addentry(19, (u32)isr19);
-    kidt_addentry(20, (u32)isr20);
-    kidt_addentry(21, (u32)isr21);
-    kidt_addentry(22, (u32)isr22);
-    kidt_addentry(23, (u32)isr23);
-    kidt_addentry(24, (u32)isr24);
-    kidt_addentry(25, (u32)isr25);
-    kidt_addentry(26, (u32)isr26);
-    kidt_addentry(27, (u32)isr27);
-    kidt_addentry(28, (u32)isr28);
-    kidt_addentry(29, (u32)isr29);
-    kidt_addentry(30, (u32)isr30);
-    kidt_addentry(31, (u32)isr31);
+    kidt_addentry(0,  (kptr_t)isr0);
+    kidt_addentry(1,  (kptr_t)isr1);
+    kidt_addentry(2,  (kptr_t)isr2);
+    kidt_addentry(3,  (kptr_t)isr3);
+    kidt_addentry(4,  (kptr_t)isr4);
+    kidt_addentry(5,  (kptr_t)isr5);
+    kidt_addentry(6,  (kptr_t)isr6);
+    kidt_addentry(7,  (kptr_t)isr7);
+    kidt_addentry(8,  (kptr_t)isr8);
+    kidt_addentry(9,  (kptr_t)isr9);
+    kidt_addentry(10, (kptr_t)isr10);
+    kidt_addentry(11, (kptr_t)isr11);
+    kidt_addentry(12, (kptr_t)isr12);
+    kidt_addentry(13, (kptr_t)isr13);
+    kidt_addentry(14, (kptr_t)isr14);
+    kidt_addentry(15, (kptr_t)isr15);
+    kidt_addentry(16, (kptr_t)isr16);
+    kidt_addentry(17, (kptr_t)isr17);
+    kidt_addentry(18, (kptr_t)isr18);
+    kidt_addentry(19, (kptr_t)isr19);
+    kidt_addentry(20, (kptr_t)isr20);
+    kidt_addentry(21, (kptr_t)isr21);
+    kidt_addentry(22, (kptr_t)isr22);
+    kidt_addentry(23, (kptr_t)isr23);
+    kidt_addentry(24, (kptr_t)isr24);
+    kidt_addentry(25, (kptr_t)isr25);
+    kidt_addentry(26, (kptr_t)isr26);
+    kidt_addentry(27, (kptr_t)isr27);
+    kidt_addentry(28, (kptr_t)isr28);
+    kidt_addentry(29, (kptr_t)isr29);
+    kidt_addentry(30, (kptr_t)isr30);
+    kidt_addentry(31, (kptr_t)isr31);
 
     // Remap the PIC
     port_write_byte(0x20, 0x11);
@@ -94,22 +95,22 @@ void kisr_install() {
     port_write_byte(0xA1, 0x0);
 
     // Install the IRQs
-    kidt_addentry(32, (u32)irq0);
-    kidt_addentry(33, (u32)irq1);
-    kidt_addentry(34, (u32)irq2);
-    kidt_addentry(35, (u32)irq3);
-    kidt_addentry(36, (u32)irq4);
-    kidt_addentry(37, (u32)irq5);
-    kidt_addentry(38, (u32)irq6);
-    kidt_addentry(39, (u32)irq7);
-    kidt_addentry(40, (u32)irq8);
-    kidt_addentry(41, (u32)irq9);
-    kidt_addentry(42, (u32)irq10);
-    kidt_addentry(43, (u32)irq11);
-    kidt_addentry(44, (u32)irq12);
-    kidt_addentry(45, (u32)irq13);
-    kidt_addentry(46, (u32)irq14);
-    kidt_addentry(47, (u32)irq15);
+    kidt_addentry(32, (kptr_t)irq0);
+    kidt_addentry(33, (kptr_t)irq1);
+    kidt_addentry(34, (kptr_t)irq2);
+    kidt_addentry(35, (kptr_t)irq3);
+    kidt_addentry(36, (kptr_t)irq4);
+    kidt_addentry(37, (kptr_t)irq5);
+    kidt_addentry(38, (kptr_t)irq6);
+    kidt_addentry(39, (kptr_t)irq7);
+    kidt_addentry(40, (kptr_t)irq8);
+    kidt_addentry(41, (kptr_t)irq9);
+    kidt_addentry(42, (kptr_t)irq10);
+    kidt_addentry(43, (kptr_t)irq11);
+    kidt_addentry(44, (kptr_t)irq12);
+    kidt_addentry(45, (kptr_t)irq13);
+    kidt_addentry(46, (kptr_t)irq14);
+    kidt_addentry(47, (kptr_t)irq15);
     kidt_ldentries();
 }
 

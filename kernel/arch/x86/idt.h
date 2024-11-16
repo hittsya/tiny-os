@@ -10,6 +10,8 @@
 
 /* IDT single entry
  */
+
+#if KARCH_X86_32
 struct PACKED kidt_entry {
     u16 low_offset;  /* Lower 16 bits of handler function address */
     u16 selector;    /* Kernel segment selector */
@@ -17,17 +19,31 @@ struct PACKED kidt_entry {
     u8  flags;
     u16 high_offset; /* Higher 16 bits of handler function address */
 };
+#endif
+
+
+#if KARCH_X86_64
+struct PACKED kidt_entry {
+ u16 low_offset;  /* Lower 16 bits of handler function address */
+ u16 selector;    /* Kernel segment selector */
+ u8  ist;
+ u8  flags;
+ u16 mid_offset; /* Higher 16 bits of handler function address */
+ u32 high_offset;
+ u32 reserved;
+};
+#endif
 
 /* @brief A pointer to the array of interrupt handlers.
  */
 struct PACKED kidt_register{
-    u16 limit;
-    u32 base;
+    u16    limit;
+    kptr_t base;
 };
 
 /* @brief Add entry to the IDT
  */
-void kidt_addentry(int n, u32 handler);
+void kidt_addentry(int n, kptr_t handler);
 
 /* @brief Load added IDT entries
  */

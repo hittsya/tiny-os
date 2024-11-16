@@ -10,4 +10,4 @@ else
 fi
 
 docker run -it --rm -v .:/home/builder/src $IMAGE_NAME make
-make run
+make run-grub
